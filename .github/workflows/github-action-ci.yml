@@ -57,4 +57,4 @@ jobs:
             docker rm $(docker ps -a | grep payment-gateway | awk {'print $1'}) || true
             docker image rm $(docker images | grep payment-gateway | awk {'print $3'}) || true
             docker pull registry.digitalocean.com/diamondshop/payment-gateway:${{ env.COMMIT-ID }}
-            docker run -d -p 8091:8080 --name payment-gateway registry.digitalocean.com/diamondshop/payment-gateway:${{ env.COMMIT-ID }}
+            docker run -d -p 8081:8081 --name payment-gateway registry.digitalocean.com/diamondshop/payment-gateway:${{ env.COMMIT-ID }}
