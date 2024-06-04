@@ -1,5 +1,7 @@
 package vn.edu.fpt.paymentgateway.third_party.vnpay.service;
 
+import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYConstants;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class VNPAYUtils {
+
+    private static final String HASH_ALGORITHM = "HmacSHA512";
 
     public static String buildQuery(Map<String, String> filedsSet) {
         try {
@@ -34,21 +38,25 @@ public class VNPAYUtils {
         }
     }
 
-    public static String hashAllFields(Map fields, String vnp_HashSecret) {
-        List fieldNames = new ArrayList(fields.keySet());
+    public static String hashAllFields(Map<String, String> fields, String vnp_HashSecret) {
+        List<String> fieldNames = new ArrayList<>(fields.keySet());
         Collections.sort(fieldNames);
         StringBuilder sb = new StringBuilder();
-        Iterator itr = fieldNames.iterator();
+        Iterator<String> itr = fieldNames.iterator();
         while (itr.hasNext()) {
-            String fieldName = (String) itr.next();
-            String fieldValue = (String) fields.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                sb.append(fieldName);
-                sb.append("=");
-                sb.append(fieldValue);
-            }
-            if (itr.hasNext()) {
-                sb.append("&");
+            try {
+                String fieldName = (String) itr.next();
+                String fieldValue = (String) fields.get(fieldName);
+                if ((fieldValue != null) && (!fieldValue.isEmpty())) {
+                    sb.append(fieldName);
+                    sb.append("=");
+                    sb.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                }
+                if (itr.hasNext()) {
+                    sb.append("&");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         return hmacSHA512(vnp_HashSecret, sb.toString());
@@ -60,9 +68,9 @@ public class VNPAYUtils {
             if (key == null || data == null) {
                 throw new NullPointerException();
             }
-            final Mac hmac512 = Mac.getInstance("HmacSHA512");
+            final Mac hmac512 = Mac.getInstance(HASH_ALGORITHM);
             byte[] hmacKeyBytes = key.getBytes();
-            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
+            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, HASH_ALGORITHM);
             hmac512.init(secretKey);
             byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
             byte[] result = hmac512.doFinal(dataBytes);
