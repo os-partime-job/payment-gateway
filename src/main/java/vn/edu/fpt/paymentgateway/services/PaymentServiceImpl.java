@@ -29,7 +29,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentCreateResponse createPayment(HttpServletRequest httpServletRequest,
                                                PaymentCreateRequest request) {
-        initTransaction(request.getOrderId(), UUID.randomUUID().toString(), request.getOrderInfo(), request.getAmount(), request.getPayType());
+        initTransaction(request.getOrderId(), request.getRequestId(), request.getOrderInfo(), request.getAmount(), request.getPayType());
         String paymentUrl = vnpayService.createPaymentUrl(httpServletRequest, request.getOrderId(), request.getOrderInfo(), request.getAmount(), request.getPayType());
         return new PaymentCreateResponse(paymentUrl);
     }

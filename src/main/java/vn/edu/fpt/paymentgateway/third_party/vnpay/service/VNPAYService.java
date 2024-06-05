@@ -66,8 +66,8 @@ public class VNPAYService {
         return paymentUrl + finalQuery + "&" + VNPAYConstants.Params.VNPAY_HASH + "=" + hashData;
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String s = "https%3A%2F%2Fwebhook.site%2F9cc4493c-bbbc-4429-bc72-0ff9cf8836be";
-        System.out.println(URLDecoder.decode(s, StandardCharsets.UTF_8.toString()));
-    }
+//    public static void main(String[] args) throws UnsupportedEncodingException {
+//        String s = "https%3A%2F%2Fwebhook.site%2F9cc4493c-bbbc-4429-bc72-0ff9cf8836be";
+//        System.out.println(URLDecoder.decode(s, StandardCharsets.UTF_8.toString()));
+//    }
 }

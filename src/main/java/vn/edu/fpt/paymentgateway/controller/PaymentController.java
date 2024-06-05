@@ -25,8 +25,8 @@ public class PaymentController {
         return ResponseEntity.ok(BaseResponse.ok(paymentService.createPayment(servletRequest, request)));
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<?> checkPayment(@RequestParam int tid) {
-        return ResponseEntity.ok(BaseResponse.ok(paymentService.checkPayment(tid)));
-    }
+//    @GetMapping("/check")
+//    public ResponseEntity<?> checkPayment(@RequestParam int tid) {
+//        return ResponseEntity.ok(BaseResponse.ok(paymentService.checkPayment(tid)));
+//    }
 }
