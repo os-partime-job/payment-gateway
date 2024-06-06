@@ -3,11 +3,12 @@ package vn.edu.fpt.paymentgateway.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.edu.fpt.paymentgateway.constants.PaymentSupplierEnum;
 import vn.edu.fpt.paymentgateway.entity.PaymentDetail;
 import vn.edu.fpt.paymentgateway.exception.PaymentGatewayException;
-import vn.edu.fpt.paymentgateway.payload.PaymentCheckTransactionResponse;
-import vn.edu.fpt.paymentgateway.payload.PaymentCreateRequest;
-import vn.edu.fpt.paymentgateway.payload.PaymentCreateResponse;
+import vn.edu.fpt.paymentgateway.payload.request.BaseCreatePaymentRequest;
+import vn.edu.fpt.paymentgateway.payload.request.VNPayPaymentCreateRequest;
+import vn.edu.fpt.paymentgateway.payload.response.PaymentCreateResponse;
 import vn.edu.fpt.paymentgateway.repo.PaymentDetailRepository;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYConstants;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYPaytypeEnum;
@@ -15,10 +16,9 @@ import vn.edu.fpt.paymentgateway.third_party.vnpay.service.VNPAYService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
-@Service
-public class PaymentServiceImpl implements PaymentService {
+@Service("paymentVNPayService")
+public class PaymentVNPayServiceImpl implements PaymentService {
 
     @Autowired
     private VNPAYService vnpayService;
@@ -28,19 +28,16 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentCreateResponse createPayment(HttpServletRequest httpServletRequest,
-                                               PaymentCreateRequest request) {
-        initTransaction(request.getOrderId(), request.getRequestId(), request.getOrderInfo(), request.getAmount(), request.getPayType());
-        String paymentUrl = vnpayService.createPaymentUrl(httpServletRequest, request.getOrderId(), request.getOrderInfo(), request.getAmount(), request.getPayType());
+                                               BaseCreatePaymentRequest request) {
+        VNPayPaymentCreateRequest vnPayPaymentCreateRequest = (VNPayPaymentCreateRequest) request;
+        initTransaction(vnPayPaymentCreateRequest.getOrderId(), vnPayPaymentCreateRequest.getRequestId(), vnPayPaymentCreateRequest.getOrderInfo(), vnPayPaymentCreateRequest.getAmount(), PaymentSupplierEnum.STRIPE, vnPayPaymentCreateRequest.getPayType());
+        String paymentUrl = vnpayService.createPaymentUrl(httpServletRequest, vnPayPaymentCreateRequest.getOrderId(), vnPayPaymentCreateRequest.getOrderInfo(),
+                vnPayPaymentCreateRequest.getAmount(), vnPayPaymentCreateRequest.getPayType());
         return new PaymentCreateResponse(paymentUrl);
     }
 
     @Override
-    public PaymentCheckTransactionResponse checkPayment(int tid) {
-        return null;
-    }
-
-    @Override
-    public void updatePayment(String orderId, long transactionId, String status) {
+    public void updatePayment(String orderId, String transactionId, String status) {
         String message = VNPAYConstants.TransactionMessage.fromValue(status).getMessage();
         PaymentDetail paymentDetail = paymentDetailRepository.findPaymentDetailByOrderId(orderId).orElseThrow(() -> new PaymentGatewayException("Không tìm thấy orderId: " + orderId));
         paymentDetail.setTransId(transactionId);
@@ -49,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentDetailRepository.save(paymentDetail);
     }
 
-    public void initTransaction(String orderId, String requestId, String orderInfo, long amount, VNPAYPaytypeEnum payType) {
+    public void initTransaction(String orderId, String requestId, String orderInfo, long amount, PaymentSupplierEnum paymentSupplierEnum, VNPAYPaytypeEnum payType) {
         PaymentDetail paymentDetail = new PaymentDetail();
         paymentDetail.setOrderId(orderId);
         paymentDetail.setRequestId(requestId);
@@ -57,6 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentDetail.setOrderInfo(orderInfo);
         paymentDetail.setPayType(payType.name());
         paymentDetail.setCreatedTime(OffsetDateTime.now());
+        paymentDetail.setPaymentSupplier(paymentSupplierEnum);
         paymentDetailRepository.save(paymentDetail);
     }
 }

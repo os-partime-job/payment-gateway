@@ -1,6 +1,7 @@
 package vn.edu.fpt.paymentgateway.entity;
 
 import lombok.Data;
+import vn.edu.fpt.paymentgateway.constants.PaymentSupplierEnum;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -21,7 +22,7 @@ public class PaymentDetail {
     private String requestId;
 
     @Column(name = "trans_id", unique = true)
-    private Long transId;
+    private String transId;
 
     @Column(name = "amount")
     private Long amount;
@@ -34,6 +35,10 @@ public class PaymentDetail {
 
     @Column(name = "pay_type")
     private String payType;
+
+    @Column(name = "pay_supplier")
+    @Enumerated(EnumType.STRING)
+    private PaymentSupplierEnum paymentSupplier;
 
     @Column(name = "message")
     private String message;

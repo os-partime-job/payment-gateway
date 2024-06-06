@@ -1,4 +1,4 @@
-package vn.edu.fpt.paymentgateway.payload;
+package vn.edu.fpt.paymentgateway.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
