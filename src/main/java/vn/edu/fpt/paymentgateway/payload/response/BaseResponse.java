@@ -1,7 +1,6 @@
-package vn.edu.fpt.paymentgateway.payload;
+package vn.edu.fpt.paymentgateway.payload.response;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class BaseResponse {

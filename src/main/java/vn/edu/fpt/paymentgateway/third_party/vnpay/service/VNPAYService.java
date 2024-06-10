@@ -27,7 +27,7 @@ public class VNPAYService {
     @Value("${vnpay.expriedTransaction.minutes}")
     private int exprieTrans;
 
-    @Value("${vnpay.returnUrl}")
+    @Value("${payment.callbackUrl}")
     private String callBackUrl;
 
     @Value("${vnpay.hashSecret}")
