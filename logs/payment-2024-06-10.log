@@ -1,0 +1,12 @@
+10/06/2024 22:30:34 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 8120 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+10/06/2024 22:30:35 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+10/06/2024 22:30:35 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+10/06/2024 22:32:06 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 10896 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+10/06/2024 22:32:06 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+10/06/2024 22:32:06 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+10/06/2024 22:32:09 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 3.681 seconds (JVM running for 4.608)
+10/06/2024 23:45:27 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 21988 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+10/06/2024 23:45:27 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+10/06/2024 23:45:27 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+10/06/2024 23:45:31 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 4.402 seconds (JVM running for 5.749)
+10/06/2024 23:46:04 INFO [PaymentFactory] Get payment for supplier: VNPAY 

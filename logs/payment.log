@@ -1,0 +1,54 @@
+12/06/2024 01:20:54 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 9096 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:20:54 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:20:54 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+12/06/2024 01:20:58 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 4.104 seconds (JVM running for 4.976)
+12/06/2024 01:21:49 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:21:50 ERROR [CustomExceptionHandler] null
+12/06/2024 01:22:06 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 13804 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:22:06 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:22:06 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+12/06/2024 01:22:11 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 5.395 seconds (JVM running for 7.237)
+12/06/2024 01:22:59 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:23:20 ERROR [CustomExceptionHandler] null
+12/06/2024 01:23:37 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 18516 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:23:37 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:23:37 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+12/06/2024 01:23:41 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 4.177 seconds (JVM running for 5.06)
+12/06/2024 01:23:43 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:23:45 ERROR [CustomExceptionHandler] null
+12/06/2024 01:25:14 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:27:08 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 1384 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:27:08 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:27:08 INFO [PaymentGatewayApplication] No active profile set, falling back to default profiles: default
+12/06/2024 01:27:12 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 4.448 seconds (JVM running for 5.585)
+12/06/2024 01:27:28 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:29:14 INFO [PaymentFactory] Get payment for supplier: VNPAY 
+12/06/2024 01:29:14 ERROR [CustomExceptionHandler] null
+12/06/2024 01:29:37 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 7416 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:29:37 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:29:37 INFO [PaymentGatewayApplication] The following profiles are active: dev
+12/06/2024 01:29:41 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 5.044 seconds (JVM running for 6.106)
+12/06/2024 01:29:50 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:29:52 ERROR [CustomExceptionHandler] null
+12/06/2024 01:30:05 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:30:35 INFO [PaymentFactory] Get payment for supplier: VNPAY 
+12/06/2024 01:30:49 ERROR [CustomExceptionHandler] null
+12/06/2024 01:31:58 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 9740 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:31:58 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:31:58 INFO [PaymentGatewayApplication] The following profiles are active: dev
+12/06/2024 01:32:03 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 5.131 seconds (JVM running for 6.473)
+12/06/2024 01:32:08 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:32:36 INFO [PaymentFactory] Get payment for supplier: VNPAY 
+12/06/2024 01:34:11 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 20212 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:34:11 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:34:11 INFO [PaymentGatewayApplication] The following profiles are active: dev
+12/06/2024 01:34:15 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 4.213 seconds (JVM running for 5.107)
+12/06/2024 01:34:16 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:34:50 INFO [PaymentFactory] Get payment for supplier: VNPAY 
+12/06/2024 01:34:50 ERROR [CustomExceptionHandler] org.hibernate.exception.ConstraintViolationException: could not execute statement
+12/06/2024 01:38:38 INFO [PaymentGatewayApplication] Starting PaymentGatewayApplication on DESKTOP-FPDK3F2 with PID 18116 (C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway\target\classes started by Thanh Dev in C:\Users\Thanh Dev\Desktop\New folder (2)\payment-gateway)
+12/06/2024 01:38:38 DEBUG [PaymentGatewayApplication] Running with Spring Boot v2.3.7.RELEASE, Spring v5.2.12.RELEASE
+12/06/2024 01:38:38 INFO [PaymentGatewayApplication] The following profiles are active: dev
+12/06/2024 01:38:42 INFO [PaymentGatewayApplication] Started PaymentGatewayApplication in 4.457 seconds (JVM running for 5.337)
+12/06/2024 01:39:18 INFO [PaymentFactory] Get payment for supplier: STRIPE 
+12/06/2024 01:39:43 INFO [PaymentFactory] Get payment for supplier: VNPAY 
