@@ -16,13 +16,13 @@ public class CustomExceptionHandler {
 
     })
     public ResponseEntity<?> handleRuntimeException(RuntimeException exception) {
-        log.error(exception.getCause());
+        log.error(exception.getCause(), exception);
         return ResponseEntity.status(500).body(BaseResponse.internalErr(exception.getMessage()));
     }
 
     @ExceptionHandler(value = PaymentGatewayException.class)
     public ResponseEntity<?> handlePaymentGatewayException(PaymentGatewayException exception) {
-        log.error(exception.getCause());
+        log.error(exception.getCause(), exception);
         return ResponseEntity.status(400).body(BaseResponse.badReq(exception.getMessage()));
     }
 }

@@ -1,7 +1,5 @@
 package vn.edu.fpt.paymentgateway.third_party.vnpay.service;
 
-import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYConstants;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +7,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class VNPAYUtils {
+public class PAYUtils {
 
     private static final String HASH_ALGORITHM = "HmacSHA512";
 

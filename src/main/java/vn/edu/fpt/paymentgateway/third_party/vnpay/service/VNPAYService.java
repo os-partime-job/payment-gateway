@@ -1,19 +1,21 @@
 package vn.edu.fpt.paymentgateway.third_party.vnpay.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYConstants;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYPaytypeEnum;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class VNPAYService {
+
+    private static final Logger log = LoggerFactory.getLogger(VNPAYService.class);
+
 
     @Value("${vnpay.pay.url}")
     private String paymentUrl;
@@ -49,19 +51,19 @@ public class VNPAYService {
         vnpayParam.put(VNPAYConstants.Params.VNPAY_CREATE_DATE, formatter.format(currentTime.getTime()));
         vnpayParam.put(VNPAYConstants.Params.VNPAY_CURR_CODE, VNPAYConstants.VNPAY_CURR_CODE_VALUE);
         vnpayParam.put(VNPAYConstants.Params.VNPAY_EXPIRE_DATE, formatter.format(expiredTime.getTime()));
-        vnpayParam.put(VNPAYConstants.Params.VNPAY_IP_ADDR, VNPAYUtils.getIpAddress(request));
+        vnpayParam.put(VNPAYConstants.Params.VNPAY_IP_ADDR, PAYUtils.getIpAddress(request));
         vnpayParam.put(VNPAYConstants.Params.VNPAY_LOCALE, locale);
         vnpayParam.put(VNPAYConstants.Params.VNPAY_ORDER_INFO, orderInfo);
         vnpayParam.put(VNPAYConstants.Params.VNPAY_ORDER_TYPE, "other");
         final String serverCallbackUrl = callBackUrl + "?orderId=" + orderId;
         vnpayParam.put(VNPAYConstants.Params.VNPAY_RETURN_URL, serverCallbackUrl);
         vnpayParam.put(VNPAYConstants.Params.VNPAY_TMN_CODE, tmnCode);
-        vnpayParam.put(VNPAYConstants.Params.VNPPAY_TNX_REF, VNPAYUtils.getRandomNumber(50));
+        vnpayParam.put(VNPAYConstants.Params.VNPPAY_TNX_REF, PAYUtils.getRandomNumber(50));
         vnpayParam.put(VNPAYConstants.Params.VNPAY_VERSION, VNPAYConstants.VNPAY_VERSION_VALUE);
 
 
-        final String finalQuery = VNPAYUtils.buildQuery(vnpayParam);
-        final String hashData = VNPAYUtils.hashAllFields(vnpayParam, hashSecret);
+        final String finalQuery = PAYUtils.buildQuery(vnpayParam);
+        final String hashData = PAYUtils.hashAllFields(vnpayParam, hashSecret);
 
         return paymentUrl + finalQuery + "&" + VNPAYConstants.Params.VNPAY_HASH + "=" + hashData;
     }

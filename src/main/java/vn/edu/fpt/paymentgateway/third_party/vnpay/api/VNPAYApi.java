@@ -2,11 +2,6 @@ package vn.edu.fpt.paymentgateway.third_party.vnpay.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYConstants;
-import vn.edu.fpt.paymentgateway.third_party.vnpay.model.VNPayQueryDrResponse;
-import vn.edu.fpt.paymentgateway.third_party.vnpay.service.VNPAYUtils;
-
-import java.util.UUID;
 
 @Component
 public class VNPAYApi {
