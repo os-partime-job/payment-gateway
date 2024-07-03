@@ -45,6 +45,9 @@ public class PaymentStripeServiceImpl implements PaymentService {
     public PaymentCreateResponse createPayment(HttpServletRequest httpServletRequest, BaseCreatePaymentRequest request) {
         StripePaymentCreateRequest stripePaymentCreateRequest = (StripePaymentCreateRequest) request;
         ordersRepository.findByUniqueOrderId(ordersRepository.findByUniqueOrderId(stripePaymentCreateRequest.getOrderId()).orElseThrow(() -> new PaymentGatewayException("Không tìm thấy orderId: " + stripePaymentCreateRequest.getOrderId())).getUniqueOrderId()).orElseThrow(() -> new PaymentGatewayException("Không tìm thấy orderId: " + stripePaymentCreateRequest.getOrderId()));
+
+        final long toUsd = (long) (request.getAmount() / 25.443);
+
         callBackurl = callBackurl + "?gateway=" + PaymentSupplierEnum.STRIPE.name();
         final String onCallbackSuccess = callBackurl + "&orderId=" + stripePaymentCreateRequest.getOrderId() + "&status=0";
         final String onCallbackFailed = callBackurl + "&orderId=" + stripePaymentCreateRequest.getOrderId() + "&status=2";
@@ -61,8 +64,8 @@ public class PaymentStripeServiceImpl implements PaymentService {
                                                                             .setName("Jewrly")
                                                                             .build()
                                                             )
-                                                            .setCurrency("vnd")
-                                                            .setUnitAmount(request.getAmount())
+                                                            .setCurrency("usd")
+                                                            .setUnitAmount(toUsd)
                                                             .build()
                                             )
                                             .setQuantity(1L)
