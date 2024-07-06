@@ -1,21 +1,19 @@
 package vn.edu.fpt.paymentgateway.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.fpt.paymentgateway.constants.PaymentSupplierEnum;
 import vn.edu.fpt.paymentgateway.constants.StatusOrder;
-import vn.edu.fpt.paymentgateway.entity.*;
-import vn.edu.fpt.paymentgateway.payload.request.SendInvoiceRequest;
-import vn.edu.fpt.paymentgateway.repo.*;
+import vn.edu.fpt.paymentgateway.entity.Deliver;
+import vn.edu.fpt.paymentgateway.entity.Delivery;
+import vn.edu.fpt.paymentgateway.entity.OrderDetail;
+import vn.edu.fpt.paymentgateway.entity.Orders;
+import vn.edu.fpt.paymentgateway.repo.DeliverRepository;
+import vn.edu.fpt.paymentgateway.repo.DeliveryRepository;
 import vn.edu.fpt.paymentgateway.constants.StatusDelivery;
+import vn.edu.fpt.paymentgateway.repo.OrderDetailRepository;
+import vn.edu.fpt.paymentgateway.repo.OrdersRepository;
 import vn.edu.fpt.paymentgateway.services.PaymentFactory;
 import vn.edu.fpt.paymentgateway.services.PaymentService;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.service.PAYUtils;
@@ -34,7 +32,6 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CallbackController {
 
-    private static final Logger log = LoggerFactory.getLogger(CallbackController.class);
     private PaymentService paymentService;
 
     @Value("${payment.redirectUrl}")
@@ -48,15 +45,9 @@ public class CallbackController {
     private OrdersRepository ordersRepository;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
-    @Autowired
-    private EndUserRepository endUserRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AddressRepository addressRepository;
 
     @GetMapping("/callback")
-    public void paymentCallback(@RequestParam Map<String, String> params, HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public void paymentCallback(@RequestParam Map<String, String> params, HttpServletResponse response, HttpServletRequest request) throws IOException {
         paymentService = PaymentFactory.getPayment(request, PaymentSupplierEnum.VNPAY);
         System.out.println("Get callback: " + params);
         String orderId = params.get("orderId");
@@ -100,30 +91,6 @@ public class CallbackController {
                 e.setStatus(StatusOrder.DELIVERY.getValue());
             });
             orderDetailRepository.saveAll(orderDetail);
-
-            //send mail
-            EndUser endUser = endUserRepository.findById(orders.getCustomerId()).get();
-            User user = userRepository.findById(endUser.getAccountId()).get();
-            SendInvoiceRequest sendInvoiceRequest = new SendInvoiceRequest();
-            Address address = addressRepository.findById(user.getId()).get();
-            if (user.getEmail() == null || user.getEmail().isEmpty()) {
-                throw new RuntimeException("Mail is empty");
-            }
-            sendInvoiceRequest.setOrderId(orderId);
-            sendInvoiceRequest.setMail(user.getEmail());
-            sendInvoiceRequest.setAddress(address.getProvince() + " " + address.getCity() + " " + address.getDistrict());
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            objectMapper.writeValueAsString(sendInvoiceRequest);
-            String json = objectMapper.writeValueAsString(sendInvoiceRequest);
-            HttpResponse<String> result = Unirest.post("http://localhost:8080/order/sendMail")
-                    .header("Content-Type", "application/json")
-                    .body(json)
-                    .asString();
-            if (result.getStatus() != 200) {
-                log.warn("Send mail fail");
-            }
         }
         response.sendRedirect(redirectUrl + PAYUtils.buildQuery(params));
     }
