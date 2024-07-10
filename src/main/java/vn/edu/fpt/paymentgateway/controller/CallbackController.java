@@ -5,15 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.fpt.paymentgateway.constants.PaymentSupplierEnum;
 import vn.edu.fpt.paymentgateway.constants.StatusOrder;
-import vn.edu.fpt.paymentgateway.entity.Deliver;
-import vn.edu.fpt.paymentgateway.entity.Delivery;
-import vn.edu.fpt.paymentgateway.entity.OrderDetail;
-import vn.edu.fpt.paymentgateway.entity.Orders;
-import vn.edu.fpt.paymentgateway.repo.DeliverRepository;
-import vn.edu.fpt.paymentgateway.repo.DeliveryRepository;
+import vn.edu.fpt.paymentgateway.entity.*;
+import vn.edu.fpt.paymentgateway.repo.*;
 import vn.edu.fpt.paymentgateway.constants.StatusDelivery;
-import vn.edu.fpt.paymentgateway.repo.OrderDetailRepository;
-import vn.edu.fpt.paymentgateway.repo.OrdersRepository;
 import vn.edu.fpt.paymentgateway.services.PaymentFactory;
 import vn.edu.fpt.paymentgateway.services.PaymentService;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.service.PAYUtils;
@@ -21,10 +15,7 @@ import vn.edu.fpt.paymentgateway.third_party.vnpay.service.PAYUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,6 +37,9 @@ public class CallbackController {
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
+    @Autowired
+    private PaymentDetailRepository paymentDetailRepository;
+
     @GetMapping("/callback")
     public void paymentCallback(@RequestParam Map<String, String> params, HttpServletResponse response, HttpServletRequest request) throws IOException {
         paymentService = PaymentFactory.getPayment(request, PaymentSupplierEnum.VNPAY);
@@ -54,6 +48,8 @@ public class CallbackController {
         String transId = params.get("transId");
         String status = params.get("status");
         paymentService.updatePayment(orderId, transId, status);
+
+        PaymentDetail detailPayMent = paymentDetailRepository.findPaymentDetailByOrderId(orderId).get();
 
         if (status.equals("0")) {
             Random rand = new Random();
@@ -84,6 +80,9 @@ public class CallbackController {
 
             Orders orders = ordersRepository.findByUniqueOrderId(orderId).get();
             orders.setStatus(StatusOrder.DELIVERY.getValue());
+            // nhan 100 tro lai luc thanh toan chia 100
+            orders.setTotalPrice(detailPayMent.getAmount()*100);
+
             ordersRepository.save(orders);
 
             List<OrderDetail> orderDetail = orderDetailRepository.findAllByUniqueOrderId(orderId);
