@@ -11,4 +11,8 @@ public interface PaymentService {
     PaymentCreateResponse createPayment(HttpServletRequest httpServletRequest, BaseCreatePaymentRequest request);
 
     void updatePayment(String orderId, String transactionId, String status);
+
+    void saveInfoToRefund(String orderId, String chargeIdent, Long amount, String status);
+
+    void refund(String orderId);
 }

@@ -46,6 +46,16 @@ public class PaymentVNPayServiceImpl implements PaymentService {
         paymentDetailRepository.save(paymentDetail);
     }
 
+    @Override
+    public void saveInfoToRefund(String orderId, String chargeIdent, Long amount, String status) {
+
+    }
+
+    @Override
+    public void refund(String orderId) {
+
+    }
+
     public void initTransaction(String orderId, String requestId, String orderInfo, long amount, PaymentSupplierEnum paymentSupplierEnum, VNPAYPaytypeEnum payType) {
         PaymentDetail paymentDetail = new PaymentDetail();
         paymentDetail.setOrderId(orderId);

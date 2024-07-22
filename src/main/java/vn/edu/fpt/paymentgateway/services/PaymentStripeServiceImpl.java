@@ -1,19 +1,25 @@
 package vn.edu.fpt.paymentgateway.services;
 
 import com.stripe.Stripe;
+import com.stripe.model.Refund;
 import com.stripe.model.checkout.Session;
+import com.stripe.param.RefundCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import vn.edu.fpt.paymentgateway.constants.PaymentSupplierEnum;
 import vn.edu.fpt.paymentgateway.entity.PaymentDetail;
+import vn.edu.fpt.paymentgateway.entity.PaymentRefund;
 import vn.edu.fpt.paymentgateway.exception.PaymentGatewayException;
 import vn.edu.fpt.paymentgateway.payload.request.BaseCreatePaymentRequest;
 import vn.edu.fpt.paymentgateway.payload.request.StripePaymentCreateRequest;
 import vn.edu.fpt.paymentgateway.payload.response.PaymentCreateResponse;
 import vn.edu.fpt.paymentgateway.repo.OrdersRepository;
 import vn.edu.fpt.paymentgateway.repo.PaymentDetailRepository;
+import vn.edu.fpt.paymentgateway.repo.PaymentRefundRepository;
 import vn.edu.fpt.paymentgateway.third_party.vnpay.contants.VNPAYConstants;
 
 import javax.annotation.PostConstruct;
@@ -24,8 +30,12 @@ import java.time.OffsetDateTime;
 @Service("paymentStripeService")
 public class PaymentStripeServiceImpl implements PaymentService {
 
+    private static final Logger log = LoggerFactory.getLogger(PaymentStripeServiceImpl.class);
     @Autowired
     private PaymentDetailRepository paymentDetailRepository;
+
+    @Autowired
+    private PaymentRefundRepository paymentRefundRepository;
 
     @Autowired
     private OrdersRepository ordersRepository;
@@ -92,6 +102,38 @@ public class PaymentStripeServiceImpl implements PaymentService {
 
         paymentDetailRepository.save(paymentDetail);
     }
+
+    @Override
+    public void saveInfoToRefund(String orderId, String chargeIdent, Long amount, String status) {
+        PaymentRefund paymentRefund = new PaymentRefund();
+        paymentRefund.setOrderId(orderId);
+        paymentRefund.setChargeIdent(chargeIdent);
+        paymentRefund.setAmount(amount);
+        paymentRefund.setStatus(status);
+
+        paymentRefundRepository.save(paymentRefund);
+        log.info("Save refund info success: {}", paymentRefund.toString());
+    }
+
+    @Override
+    public void refund(String orderId) {
+        PaymentRefund paymentRefund = paymentRefundRepository.findPaymentRefundByOrderId(orderId).orElseThrow(() -> new PaymentGatewayException("Không tìm thấy orderId: " + orderId));
+        try {
+            Stripe.apiKey = apiKey;
+            RefundCreateParams refundCreateParams =
+                    RefundCreateParams.builder().setCharge(paymentRefund.getChargeIdent())
+                            .setAmount(paymentRefund.getAmount())
+                            .build();
+            Refund refund = Refund.create(refundCreateParams);
+            if (paymentRefund.getStatus().equals("PENDING")) {
+                paymentRefund.setStatus("SUCCESS");
+                paymentRefundRepository.save(paymentRefund);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("");
+        }
+    }
+
 
     public void initTransaction(String orderId, String requestId, String transId, String orderInfo, long amount, PaymentSupplierEnum paymentSupplierEnum) {
         PaymentDetail paymentDetail = new PaymentDetail();
