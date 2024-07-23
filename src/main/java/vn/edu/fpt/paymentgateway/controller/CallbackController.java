@@ -58,7 +58,7 @@ public class CallbackController {
                     .filter(e -> e.getStatus().equals("active"))
                     .collect(Collectors.toList())
                     .stream()
-                    .map(Deliver::getId)
+                    .map(Deliver::getUserId)
                     .collect(Collectors.toList());
 
             Long deliverId = var5.get(rand.nextInt(var5.size()));
