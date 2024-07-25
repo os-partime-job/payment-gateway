@@ -2,6 +2,7 @@ package vn.edu.fpt.paymentgateway.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.fpt.paymentgateway.constants.PaymentSupplierEnum;
 import vn.edu.fpt.paymentgateway.constants.StatusOrder;
@@ -27,7 +28,6 @@ public class CallbackController {
 
     @Value("${payment.redirectUrl}")
     private String redirectUrl;
-
     @Autowired
     private DeliverRepository deliverRepository;
     @Autowired
@@ -36,11 +36,13 @@ public class CallbackController {
     private OrdersRepository ordersRepository;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
-
     @Autowired
     private PaymentDetailRepository paymentDetailRepository;
+    @Autowired
+    private JewelryRepository jewelryRepository;
 
     @GetMapping("/callback")
+    @Transactional(rollbackFor = Exception.class)
     public void paymentCallback(@RequestParam Map<String, String> params, HttpServletResponse response, HttpServletRequest request) throws IOException {
         paymentService = PaymentFactory.getPayment(request, PaymentSupplierEnum.VNPAY);
         System.out.println("Get callback: " + params);
@@ -81,14 +83,24 @@ public class CallbackController {
             Orders orders = ordersRepository.findByUniqueOrderId(orderId).get();
             orders.setStatus(StatusOrder.DELIVERY.getValue());
             // nhan 100 tro lai luc thanh toan chia 100
-            orders.setTotalPrice(detailPayMent.getAmount()*100);
-
-            ordersRepository.save(orders);
+            orders.setTotalPrice(detailPayMent.getAmount() * 100);
 
             List<OrderDetail> orderDetail = orderDetailRepository.findAllByUniqueOrderId(orderId);
+            List<Jewelry> jewelries = jewelryRepository.findAllByIdIn(orderDetail.stream().map(OrderDetail::getJewelryId).collect(Collectors.toList()));
             orderDetail.forEach(e -> {
                 e.setStatus(StatusOrder.DELIVERY.getValue());
             });
+
+            jewelries.forEach(e -> {
+                Optional<OrderDetail> orderDetail1 =
+                        orderDetail.stream()
+                                .filter(orderDetail2 -> orderDetail2.getJewelryId().equals(e.getId()))
+                                .findFirst();
+
+                orderDetail1.ifPresent(detail -> e.setQuantity(e.getQuantity() - detail.getQuantityNumber()));
+            });
+            jewelryRepository.saveAll(jewelries);
+            ordersRepository.save(orders);
             orderDetailRepository.saveAll(orderDetail);
         }
         response.sendRedirect(redirectUrl + PAYUtils.buildQuery(params));
